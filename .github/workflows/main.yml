@@ -14,13 +14,14 @@ jobs:
       - uses: actions/checkout@v4  # Checkout your code from GitHub
         with:
          node-version: '20'  # Or a later supported version
-
-      - name: Create JIRA ticket
-        uses: atlassian/gajira-create@v3
+      - uses: actions/checkout@v4  # Checkout your code from GitHub
         with:
           jiraUrl: 'https://rkppersonal.atlassian.net/jira/core/projects/NEW/board'  # Replace with your JIRA URL
           apiToken: ${{ secrets.MYJIRATOKEN }}
           email: ${{ secrets.JIRA_EMAIL }}
+      - name: Create JIRA ticket
+        uses: atlassian/gajira-create@v3
+        with:
           project: 'NewProject' # Replace with your project key
           issuetype: 'Task'  # Replace with the desired issue type
           summary: "Issue created from GitHub Actions workflow"
