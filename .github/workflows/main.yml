@@ -12,6 +12,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4  # Checkout your code from GitHub
+        with:
+         node-version: '20'  # Or a later supported version
 
       - name: Create JIRA ticket
         uses: atlassian/gajira-create@v3
