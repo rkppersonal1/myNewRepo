@@ -1,0 +1,28 @@
+name: Create JIRA Ticket
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  create_ticket:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Get Changed Files
+        id: changed-files
+        run: |
+          echo ::set-output name=files::$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+
+      - name: Create JIRA Ticket
+        uses: atlassian/gajira-create-issue@v2
+        with:
+          apiToken: ${{ secrets.MYJIRATOKEN }}
+          email: ${{ secrets.JIRA_EMAIL }}
+          projectKey: 'PROJECT'
+          summary: 'New Ticket Created Automatically'
+          description: 'A new ticket was created due to changes in the following files: ${{ steps.changed-files.outputs.files }}'
+          issueType: 'Bug'
