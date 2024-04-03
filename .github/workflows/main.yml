@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v3  # Checkout code
 
       - name: Login to Jira (using Atlassian Connect)
-        uses: atlassian/gajira-login@v1
+        uses: atlassian/gajira-login@v3
         with:
           jira-hostname: https://rkppersonal.atlassian.net  # Replace with your Jira URL
           jira-project: NewProject  # Replace with your project key
