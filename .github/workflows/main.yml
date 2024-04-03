@@ -20,11 +20,11 @@ jobs:
 
       - name: Find Issue Key in Commit Message (optional)
         id: find-issue-key
-        uses: atlassian/gajira@v2
+        uses: atlassian/gajira@v3
         # ... (rest of the step remains the same)
 
       - id: create-ticket  # No change, uses action for ticket creation
-        uses: atlassian/gajira@v2
+        uses: atlassian/gajira@v3
         env:
           # Access JIRA_API_TOKEN securely from GitHub secrets
           JIRA_API_TOKEN: ${{ secrets.MYJIRATOKEN }}
