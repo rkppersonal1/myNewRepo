@@ -6,37 +6,30 @@ on:
   pull_request:
     branches: [master]
 jobs:
-  create-jira-ticket:
-    runs-on: ubuntu-latest  # Or your preferred runner
+   create-jira-ticket:
+    runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3  # Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      - name: Login to Jira (using Atlassian Connect)
-        uses: atlassian/gajira-login@v3
-        with:
-          jira-hostname: 'https://rkppersonal.atlassian.net'  # Replace with your Jira URL
-          jira-project: 'NewProject'  # Replace with your project key
-
-      - name: Find Issue Key in Commit Message (optional)
-        id: find-issue-key
-        uses: atlassian/gajira-create@v3
-        # ... (rest of the step remains the same)
-
-      - id: create-ticket  # No change, uses action for ticket creation
-        uses: atlassian/gajira-create@v3
+      - name: Create JIRA ticket
         env:
-          # Access JIRA_API_TOKEN securely from GitHub secrets
           JIRA_API_TOKEN: ${{ secrets.MYJIRATOKEN }}
-        # ... (rest of the step remains the same, no changes needed)
-
-      # Adjust based on your intended behavior for adding comments:
-      - uses: atlassian/gajira-create@v3  # Use the action if always needed
-        # OR (if conditional execution based on issue_key is desired)
-        # - name: Add Comment to Existing Ticket (if issue key found)
-        #   id: add-comment
-        #   env:
-        #     JIRA_API_TOKEN: ${{ secrets.MYJIRATOKEN }}
-        #   condition: steps.find-issue-key.outputs.issue_key
-        #   run: |
-        #     # Add logic to check for issue_key and add comment if it exists
+        run: |
+          curl -X POST \
+            -H "Authorization: Basic $JIRA_API_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d '{
+                  "fields": {
+                    "project": {
+                      "key": "NewProject"
+                    },
+                    "summary": "Automated JIRA ticket created by GitHub Actions",
+                    "description": "This JIRA ticket is automatically created based on a commit in GitHub.",
+                    "issuetype": {
+                      "name": "Task"  # Adjust this based on your JIRA issue type
+                    }
+                  }
+                }' \
+            https://rkppersonal.atlassian.net/rest/api/3/issue/
