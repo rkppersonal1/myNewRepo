@@ -7,21 +7,17 @@ on:
   pull_request:
     branches: [master]
 jobs:
-  create_ticket:
-    runs-on: ubuntu-latest
+  create-jira-ticket:
+    runs-on: ubuntu-latest  # Replace with your desired runner
+
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v3  # Checkout your code from GitHub
 
-      - name: Get Changed Files
-        id: changed-files
-        run: |
-          echo ::set-output name=files::$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
-
-      - name: Create JIRA Ticket
+      - name: Create JIRA ticket
         uses: atlassian/gajira-create@v3
-        with:          
-          project: 'NewProject'
-          IssueType: 'Task'
-          summary: 'New Ticket Created Automatically'
-          description: 'A new ticket was created due to changes in the following files: ${{ steps.changed-files.outputs.files }}'          
+        with:
+          project: 'NewProject' # Replace with your project key
+          issuetype: 'Task'  # Replace with the desired issue type
+          summary: "Issue created from GitHub Actions workflow"
+          description: "This ticket was automatically created by a GitHub Actions workflow."
+          fields: '{"customfield_10000": "Some custom field value"}'  # Optional, replace with your custom field and value
