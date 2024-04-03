@@ -18,7 +18,6 @@ jobs:
       - name: Create JIRA ticket
         uses: atlassian/gajira-create@v3
         with:
-          node-version: '20'  # Or a later supported version
           project: 'NewProject' # Replace with your project key
           issuetype: 'Task'  # Replace with the desired issue type
           summary: "Issue created from GitHub Actions workflow"
