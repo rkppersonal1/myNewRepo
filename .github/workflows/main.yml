@@ -18,6 +18,9 @@ jobs:
       - name: Create JIRA ticket
         uses: atlassian/gajira-create@v3
         with:
+          jiraUrl: 'https://rkppersonal.atlassian.net/jira/core/projects/NEW/board'  # Replace with your JIRA URL
+          apiToken: ${{ secrets.MYJIRATOKEN }}
+          email: ${{ secrets.JIRA_EMAIL }}
           project: 'NewProject' # Replace with your project key
           issuetype: 'Task'  # Replace with the desired issue type
           summary: "Issue created from GitHub Actions workflow"
