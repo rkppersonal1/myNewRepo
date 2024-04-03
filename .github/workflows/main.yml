@@ -20,9 +20,7 @@ jobs:
 
       - name: Create JIRA Ticket
         uses: atlassian/gajira-create@v3
-        with:
-          apiToken: ${{ secrets.MYJIRATOKEN }}
-          email: ${{ secrets.JIRA_EMAIL }}
+        with:          
           project: 'NewProject'
           IssueType: 'Task'
           projectKey: 'PROJECT'
