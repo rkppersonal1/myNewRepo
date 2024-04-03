@@ -2,14 +2,10 @@ name: Create JIRA Ticket
 
 on:
   push:
-    branches:
-      - main
-      - master
+    branches: [master]
+   
   pull_request:
-    branches:
-      - main
-      - master
-
+    branches: [master]
 jobs:
   create_ticket:
     runs-on: ubuntu-latest
