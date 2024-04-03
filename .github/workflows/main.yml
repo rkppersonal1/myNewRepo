@@ -15,8 +15,8 @@ jobs:
       - name: Login to Jira (using Atlassian Connect)
         uses: atlassian/gajira-login@v3
         with:
-          jira-hostname: https://rkppersonal.atlassian.net  # Replace with your Jira URL
-          jira-project: NewProject  # Replace with your project key
+          jira-hostname: 'https://rkppersonal.atlassian.net'  # Replace with your Jira URL
+          jira-project: 'NewProject'  # Replace with your project key
 
       - name: Find Issue Key in Commit Message (optional)
         id: find-issue-key
