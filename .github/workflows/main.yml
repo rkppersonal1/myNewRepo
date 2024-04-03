@@ -31,7 +31,7 @@ jobs:
         # ... (rest of the step remains the same, no changes needed)
 
       # Adjust based on your intended behavior for adding comments:
-      - uses: atlassian/gajira@v2  # Use the action if always needed
+      - uses: atlassian/gajira@v3  # Use the action if always needed
         # OR (if conditional execution based on issue_key is desired)
         # - name: Add Comment to Existing Ticket (if issue key found)
         #   id: add-comment
