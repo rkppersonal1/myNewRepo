@@ -18,7 +18,7 @@ jobs:
         env:
           JIRA_API_TOKEN: ${{ secrets.MYJIRATOKEN }}
           # Escape special characters in JIRA_EMAIL if needed
-          JIRA_EMAIL: ${{ secrets.JIRA_EMAIL // /\\"/g }}
+          JIRA_EMAIL: ${{ secrets.JIRA_EMAIL}}
         run: |
           curl -X POST \
             -H "Authorization: Basic $JIRA_API_TOKEN" \
