@@ -2,8 +2,9 @@ name: Create Jira Ticket on Commit
 
 on:
   push:
-    branches: [ main ]  # Adjust branch(es) to trigger workflow
-
+    branches: [ master ]  # Adjust branch(es) to trigger workflow
+  pull_request:
+    branches: [master]
 jobs:
   create-jira-ticket:
     runs-on: ubuntu-latest  # Or your preferred runner
