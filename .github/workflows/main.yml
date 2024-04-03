@@ -11,12 +11,12 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
       - name: Create JIRA ticket
         env:
           JIRA_API_TOKEN: ${{ secrets.MYJIRATOKEN }}
-          email: ${{ secrets.JIRA_EMAIL }}
+          JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
         run: |
           curl -X POST \
             -H "Authorization: Basic $JIRA_API_TOKEN" \
@@ -30,7 +30,11 @@ jobs:
                     "description": "This JIRA ticket is automatically created based on a commit in GitHub.",
                     "issuetype": {
                       "name": "Task"  # Adjust this based on your JIRA issue type
+                    },
+                    "reporter": {
+                      "name": "${JIRA_EMAIL}"
                     }
                   }
                 }' \
             https://rkppersonal.atlassian.net/rest/api/3/issue/
+
