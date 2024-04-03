@@ -20,18 +20,18 @@ jobs:
 
       - name: Find Issue Key in Commit Message (optional)
         id: find-issue-key
-        uses: atlassian/gajira@v3
+        uses: atlassian/gajira-create@v3
         # ... (rest of the step remains the same)
 
       - id: create-ticket  # No change, uses action for ticket creation
-        uses: atlassian/gajira@v3
+        uses: atlassian/gajira-create@v3
         env:
           # Access JIRA_API_TOKEN securely from GitHub secrets
           JIRA_API_TOKEN: ${{ secrets.MYJIRATOKEN }}
         # ... (rest of the step remains the same, no changes needed)
 
       # Adjust based on your intended behavior for adding comments:
-      - uses: atlassian/gajira@v3  # Use the action if always needed
+      - uses: atlassian/gajira-create@v3  # Use the action if always needed
         # OR (if conditional execution based on issue_key is desired)
         # - name: Add Comment to Existing Ticket (if issue key found)
         #   id: add-comment
