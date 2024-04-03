@@ -23,6 +23,5 @@ jobs:
         with:          
           project: 'NewProject'
           IssueType: 'Task'
-          projectKey: 'PROJECT'
           summary: 'New Ticket Created Automatically'
           description: 'A new ticket was created due to changes in the following files: ${{ steps.changed-files.outputs.files }}'          
