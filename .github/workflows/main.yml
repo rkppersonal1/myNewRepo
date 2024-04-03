@@ -11,10 +11,7 @@ jobs:
     runs-on: ubuntu-latest  # Replace with your desired runner
 
     steps:
-      - uses: actions/checkout@v4  # Checkout your code from GitHub
-        with:
-         node-version: '20'  # Or a later supported version
-      - uses: actions/checkout@v4  # Checkout your code from GitHub
+      - uses: actions/checkout@v3  # Checkout your code from GitHub       
         with:
           jiraUrl: 'https://rkppersonal.atlassian.net/jira/core/projects/NEW/board'  # Replace with your JIRA URL
           apiToken: ${{ secrets.MYJIRATOKEN }}
