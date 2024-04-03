@@ -1,26 +1,41 @@
-name: Create JIRA Ticket
+name: Create Jira Ticket on Commit
 
 on:
   push:
-    branches: [master]
-   
-  pull_request:
-    branches: [master]
+    branches: [ main ]  # Adjust branch(es) to trigger workflow
+
 jobs:
   create-jira-ticket:
-    runs-on: ubuntu-latest  # Replace with your desired runner
+    runs-on: ubuntu-latest  # Or your preferred runner
 
     steps:
-      - uses: actions/checkout@v3  # Checkout your code from GitHub       
+      - uses: actions/checkout@v3  # Checkout code
+
+      - name: Login to Jira (using Atlassian Connect)
+        uses: atlassian/gajira-login@v1
         with:
-          jiraUrl: 'https://rkppersonal.atlassian.net/jira/core/projects/NEW/board'  # Replace with your JIRA URL
-          apiToken: ${{ secrets.MYJIRATOKEN }}
-          email: ${{ secrets.JIRA_EMAIL }}
-      - name: Create JIRA ticket
-        uses: atlassian/gajira-create@v3
-        with:
-          project: 'NewProject' # Replace with your project key
-          issuetype: 'Task'  # Replace with the desired issue type
-          summary: "Issue created from GitHub Actions workflow"
-          description: "This ticket was automatically created by a GitHub Actions workflow."
-          fields: '{"customfield_10000": "Some custom field value"}'  # Optional, replace with your custom field and value
+          jira-hostname: https://rkppersonal.atlassian.net  # Replace with your Jira URL
+          jira-project: NewProject  # Replace with your project key
+
+      - name: Find Issue Key in Commit Message (optional)
+        id: find-issue-key
+        uses: atlassian/gajira@v2
+        # ... (rest of the step remains the same)
+
+      - id: create-ticket  # No change, uses action for ticket creation
+        uses: atlassian/gajira@v2
+        env:
+          # Access JIRA_API_TOKEN securely from GitHub secrets
+          JIRA_API_TOKEN: ${{ secrets.MYJIRATOKEN }}
+        # ... (rest of the step remains the same, no changes needed)
+
+      # Adjust based on your intended behavior for adding comments:
+      - uses: atlassian/gajira@v2  # Use the action if always needed
+        # OR (if conditional execution based on issue_key is desired)
+        # - name: Add Comment to Existing Ticket (if issue key found)
+        #   id: add-comment
+        #   env:
+        #     JIRA_API_TOKEN: ${{ secrets.MYJIRATOKEN }}
+        #   condition: steps.find-issue-key.outputs.issue_key
+        #   run: |
+        #     # Add logic to check for issue_key and add comment if it exists
