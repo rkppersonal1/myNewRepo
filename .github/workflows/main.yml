@@ -7,51 +7,42 @@ on:
     branches: [master]
 
 jobs:
-  create-jira-ticket:
+  name: Create JIRA Ticket
     runs-on: windows-latest
-
+    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-      - name: Create JIRA ticket
-        env:
-          JIRA_API_TOKEN: ${{ secrets.MYJIRATOKEN }}
+      - name: Set up PowerShell
+        uses: microsoft/setup-powershell@v1
+
+      - name: Run PowerShell script to create JIRA ticket
         run: |
-          # Define JIRA API endpoint
-$url = "https://rkppersonal.atlassian.net/rest/api/3/issue/"
+          $url = "https://rkppersonal.atlassian.net/rest/api/3/issue/"
+          $projectKey = "NEW"
+          $summary = "Example Ticket"
+          $description = "This is an example JIRA ticket created via PowerShell"
+          $issueType = "Task"
+          $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("rkppersonal" + ":" + "${{ secrets.JIRA_API_TOKEN }}")))
+          $body = @{
+              fields = @{
+                  project = @{
+                      key = $projectKey
+                  }
+                  summary = $summary
+                  description = $description
+                  issuetype = @{
+                      name = $issueType
+                  }
+              }
+          } | ConvertTo-Json
+          $headers = @{
+              "Authorization" = "Basic $base64AuthInfo"
+              "Content-Type" = "application/json"
+          }
+          $response = Invoke-WebRequest -Uri $url -Method Post -Headers $headers -Body $body
+          Write-Output $response.Content
 
-# Define project key, summary, description, and issue type
-$projectKey = "NEW"
-$summary = "Example Ticket"
-$description = "This is an example JIRA ticket created via PowerShell"
-$issueType = "Task"
-
-# Encode API token
-$base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("rkppersonal" + ":" + "MYJIRATOKEN")))
-
-# Construct request body
-$body = @{
-    fields = @{
-        project = @{
-            key = $projectKey
-        }
-        summary = $summary
-        description = $description
-        issuetype = @{
-            name = $issueType
-        }
-    }
-} | ConvertTo-Json
-
-$headers = @{
-    "Authorization" = "Basic rkppersonal:MYJIRATOKEN"
-    "Content-Type" = "application/json"
-}
-
-# Send request to create JIRA ticket
-$response = Invoke-WebRequest -Uri $url -Method Post -Headers $headers -Body $body
-
-# Output response content
-Write-Output $response.Content
-
+        env:
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
