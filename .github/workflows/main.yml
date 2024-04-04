@@ -8,34 +8,28 @@ on:
 
 jobs:
   create-jira-ticket:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
       - name: Create JIRA ticket
         env:
           JIRA_API_TOKEN: ${{ secrets.MYJIRATOKEN }}
-          # Escape special characters in JIRA_EMAIL if needed
-          JIRA_EMAIL: ${{ secrets.JIRA_EMAIL}}
         run: |
-          curl -X POST \
-            -H "Authorization: Basic $JIRA_API_TOKEN" \
-            -H "Content-Type: application/json" \
-            -d '{
-              "fields": {
-                "project": {
-                  "key": "NewProject"
-                },
-                "summary": "Automated JIRA ticket created by GitHub Actions",
-                "description": "This JIRA ticket is automatically created based on a commit in GitHub.",
-                "issuetype": {
-                  "name": "Task"  # Adjust this based on your JIRA issue type
-                },
-                "reporter": {
-                  "name": "${{ secrets.JIRA_EMAIL }}"
-                }
-              }
-            }' \
-            https://rkppersonal.atlassian.net/rest/api/3/issue/
+          curl -X POST `
+            -H "Authorization: Basic $JIRA_API_TOKEN" `
+            -H "Content-Type: application/json" `
+            -d "{ `"
+                  `"fields": { `"
+                    `"project": { `"
+                      `"key": `"NewProject`" `"
+                    `"}, `"
+                    `"summary": `"Automated JIRA ticket created by GitHub Actions`", `"
+                    `"description": `"This JIRA ticket is automatically created based on a commit in GitHub.`", `"
+                    `"issuetype": { `"
+                      `"name": `"Task`" `"
+                    `"}`"
+                  `"}" `
+            https://rkppersonal.atlassian.net/rest/api/3/issue/  
