@@ -25,7 +25,7 @@ jobs:
           $summary = "Example Ticket"
           $description = "This is an example JIRA ticket created via PowerShell"
           $issueType = "Task"
-          $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("rkppersonal" + ":" + "${{ secrets.JIRA_API_TOKEN }}")))
+          $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("rkppersonal" + ":" + "${{ secrets.MYJIRATOKEN }}")))
           $body = @{
               fields = @{
                   project = @{
@@ -46,4 +46,4 @@ jobs:
           Write-Output $response.Content
 
         env:
-          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+          JIRA_API_TOKEN: ${{ secrets.MYJIRATOKEN }}
