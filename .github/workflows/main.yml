@@ -13,10 +13,10 @@ jobs:
     
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up PowerShell
-        uses: actions/runner-images@v3
+        uses: microsoft/powershell@v3
 
       - name: Run PowerShell script to create JIRA ticket
         run: |
