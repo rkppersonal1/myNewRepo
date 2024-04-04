@@ -18,18 +18,40 @@ jobs:
         env:
           JIRA_API_TOKEN: ${{ secrets.MYJIRATOKEN }}
         run: |
-          curl -X POST `
-            -H "Authorization: Basic $JIRA_API_TOKEN" `
-            -H "Content-Type: application/json" `
-            -d "{ `"
-                  `"fields": { `"
-                    `"project": { `"
-                      `"key": `"NewProject`" `"
-                    `"}, `"
-                    `"summary": `"Automated JIRA ticket created by GitHub Actions`", `"
-                    `"description": `"This JIRA ticket is automatically created based on a commit in GitHub.`", `"
-                    `"issuetype": { `"
-                      `"name": `"Task`" `"
-                    `"}`"
-                  `"}" `
-           https://rkppersonal.atlassian.net/jira/core/projects
+          # Define JIRA API endpoint
+$url = "https://rkppersonal.atlassian.net/rest/api/3/issue/"
+
+# Define project key, summary, description, and issue type
+$projectKey = "NEW"
+$summary = "Example Ticket"
+$description = "This is an example JIRA ticket created via PowerShell"
+$issueType = "Task"
+
+# Encode API token
+$base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("rkppersonal" + ":" + "MYJIRATOKEN")))
+
+# Construct request body
+$body = @{
+    fields = @{
+        project = @{
+            key = $projectKey
+        }
+        summary = $summary
+        description = $description
+        issuetype = @{
+            name = $issueType
+        }
+    }
+} | ConvertTo-Json
+
+$headers = @{
+    "Authorization" = "Basic rkppersonal:MYJIRATOKEN"
+    "Content-Type" = "application/json"
+}
+
+# Send request to create JIRA ticket
+$response = Invoke-WebRequest -Uri $url -Method Post -Headers $headers -Body $body
+
+# Output response content
+Write-Output $response.Content
+
