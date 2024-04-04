@@ -32,4 +32,4 @@ jobs:
                       `"name": `"Task`" `"
                     `"}`"
                   `"}" `
-            https://rkppersonal.atlassian.net/rest/api/3/issue/  
+           https://rkppersonal.atlassian.net/jira/core/projects
